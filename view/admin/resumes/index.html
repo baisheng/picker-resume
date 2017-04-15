@@ -1,0 +1,158 @@
+{% extends "../_layout.html" %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-sm-6 col-lg-4" v-for="_ in list">
+            <div class="panel " :class=" _.id == default_index ? 'border-primary-400 border-lg' : ''">
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            <a :href="_.content_json.resume.basics.picture">
+                                <img :src="_.content_json.resume.basics.picture"
+                                     style="width: 70px; height: 70px;" class="img-circle" alt="">
+                            </a>
+                        </div>
+
+                        <div class="media-body">
+                            <h6 class="media-heading" v-html="_.title"></h6>
+                            <p class="text-muted" v-html="_.type"></p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel-footer text-center no-padding">
+                    <div class="row">
+                        <div class="col-xs-3" v-if="_.id == default_index">
+                            <a class="display-block p-10 "><i class="icon-check text-success"></i></a>
+                        </div>
+                        <div class="col-xs-3" v-else>
+                            <a @click="active(_.id)" class="display-block p-10 text-muted" data-popup="tooltip"
+                               data-placement="top" data-container="body" title=""
+                               data-original-title="设置为默认简历"><i class="icon-check position-left"></i>默认</a>
+                        </div>
+                        <div class="col-xs-3">
+                            <a href="#" class="display-block p-10 text-muted" data-popup="tooltip"
+                               data-placement="top" data-container="body" title="" data-original-title="预览"><i
+                                        class="icon-eye"></i></a>
+                        </div>
+
+                        <div class="col-xs-3">
+                            <a :href="'/admin/resume/' + _.id" class="display-block p-10 text-default" data-popup="tooltip"
+                               data-placement="top" data-container="body" title=""><i
+                                        class="icon-pencil5"></i></a>
+                        </div>
+
+                        <div class="col-xs-3">
+                            <a :href="'/admin/resumes/delete?ids=' + _.id" class="display-block p-10 text-default delete ajax" data-popup="tooltip" data-placement="top" data-container="body" title="" data-original-title="删除简历"><i
+                                        class="icon-trash text-danger-400"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                status: '',
+                default_index: '<$ options.default_index $>',
+                list: {}
+            },
+            mounted: function () {
+                var vue = this;
+                vue.fetch();
+
+                eventHub.$on("fetch", function () {
+                    vue.fetch();
+                });
+
+            },
+            methods: {
+                active: function (id) {
+                    this.status = 'saving';
+                    var vue = this;
+
+                    var postData = {
+                        "name": 'default_index',
+                        "value": id
+                    }
+
+                    fetch('/admin/options', {
+                        credentials: 'include',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(postData)
+
+                    }).then(function (response) {
+                        if (response.ok) {
+                            vue.status = 'success';
+
+                            return response.json();
+                        } else {
+                            var error = new Error(response.statusText)
+                            error.response = response
+                            throw error
+                        }
+                    }).then(function (json) {
+                        eventHub.$emit('fetch');
+
+                        vue.default_index = id;
+                    })
+                },
+                activeTheme: function (theme_name) {
+                    if (theme_name === this.current_theme) {
+                        return 'checked';
+                    } else {
+                        return false;
+                    }
+                },
+
+                fetch: function () {
+
+                    var vue = this;
+                    var _url = "/admin/posts/list?type=resume";
+
+                    fetch(_url, {
+                        credentials: 'include',
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+
+                    }).then(function (response) {
+
+                        if (response.ok) {
+
+                            return response.json();
+
+                        } else {
+                            vue.status = 'error';
+                            var error = new Error(response.statusText)
+                            error.response = response
+                            throw error
+                        }
+                    }).then(function (json) {
+                        vue.list = json.data;
+
+                    })
+
+
+                }
+            }
+
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "../_layout.html" %}
+
+
+{% block navbar_right %}
+    <li>
+        <a href="">
+            <i class="icon-plus2 text-teal"></i>
+
+            <span class="position-right text-semibold">新模板</span></a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-3" v-for="_ in themes">
+
+            <div class="panel panel-flat" :class=" _.name == current_theme ? 'border-teal-400' : ''">
+                <div class="panel-body">
+                    <div class="thumb content-group">
+                        <img :src="'/resume_themes/' + _.name + '/screenshot.png'" alt="" class="img-reponsive">
+
+                        <div class="caption-overflow">
+										<span>
+											<a href="#" class="btn btn-flat border-white text-white btn-rounded btn-icon legitRipple"><i class="icon-arrow-right8"></i></a>
+										</span>
+                        </div>
+                    </div>
+
+                    <h5 class="text-semibold mb-5">
+                        <a href="#" class="text-default">{{ _.name }}</a>
+                    </h5>
+
+                    <ul class="list-inline list-inline-separate text-muted content-group">
+                        <li>@ <a href="#" class="text-muted">{{ _.author }}</a></li>
+                    </ul>
+
+                </div>
+
+                <div class="panel-footer panel-footer-condensed">
+                    <div class="heading-elements not-collapsible">
+                        <span class="heading-text" v-if="_.name == current_theme">
+                            <span class="status-mark position-left bg-success-400"></span>
+                            <span class="text-success">启用</span>
+                        </span>
+                        <span class="heading-text" v-else>
+                            <span class="status-mark position-left border-grey-400"></span>
+                        </span>
+
+
+                        <ul class="list-inline list-inline-condensed heading-text pull-right">
+                            <li class=""><a href="#" class="text-default" data-toggle="modal" data-target="#"><i class="icon-eye8 text-muted"></i></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="text-default dropdown-toggle" data-toggle="dropdown"><i class="icon-menu7"></i> </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    {#<li><a href="#"><i class="icon-eye"></i> 实时演示</a></li>#}
+                                    <li v-if="_.name != current_theme"><a @click="active(_.name)"><i class="icon-check"></i> 启用</a></li>
+                                    <li><a href="#"><i class="icon-stop2 text-danger-400"></i> 停用</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+{% endblock %}
+
+<!-- /main content -->
+
+
+{% block script %}
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                current_theme: '<$ options.current_theme $>',
+                themes: []
+            },
+
+            mounted: function(){
+                var vue = this;
+                vue.fetch();
+
+                eventHub.$on("fetch", function () {
+
+                });
+            },
+            computed: {
+                // a computed getter
+            },
+            methods: {
+                active: function(theme_name){
+                    this.status = 'saving';
+                    var self = this;
+
+                    var postData = {
+                        "name": 'current_theme',
+                        "value": theme_name
+                    }
+
+                    fetch('/admin/options', {
+                        credentials: 'include',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(postData)
+
+                    }).then(function (response) {
+                        if (response.ok) {
+                            self.status = 'success';
+//                            clearTimeout(timeout);
+
+                            return response.json();
+                        } else {
+//                            notify(data.errmsg, "danger");
+                            var error = new Error(response.statusText)
+                            error.response = response
+                            throw error
+                        }
+                    }).then(function (json) {
+                        self.current_theme = theme_name;
+                    })
+                },
+                fetch: function () {
+
+                    var vue = this;
+                    var _url = "/admin/resumes/get";
+
+                    fetch(_url, {
+                        credentials: 'include',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+
+                    }).then(function (response) {
+
+                        if (response.ok) {
+
+                            return response.json();
+
+                        } else {
+                            self.status = 'error';
+
+                            var error = new Error(response.statusText)
+                            error.response = response
+                            throw error
+                        }
+                    }).then(function (json) {
+                        vue.themes = json.data;
+                        eventHub.$emit('fetch')
+
+                    })
+
+
+                }
+            }
+
+
+        });
+
+    </script>
+
+{% endblock %}

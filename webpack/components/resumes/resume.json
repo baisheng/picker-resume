@@ -1,0 +1,177 @@
+{
+  "meta": {
+    "sections": [
+      {
+        "name": "profiles",
+        "active": true
+      },
+      {
+        "name": "education",
+        "active": true
+      },
+      {
+        "name": "work",
+        "active": true
+      },
+      {
+        "name": "additionalWork",
+        "active": true
+      },
+      {
+        "name": "skills",
+        "active": true
+      },
+      {
+        "name": "languages",
+        "active": true
+      },
+      {
+        "name": "interests",
+        "active": true
+      },
+      {
+        "name": "awards",
+        "active": false
+      },
+      {
+        "name": "references",
+        "active": false
+      },
+      {
+        "name": "publications",
+        "active": false
+      }
+    ]
+  },
+  "author": "caixie",
+  "version": 1,
+  "template": {
+    "work": [
+      {
+        "company": "",
+        "endDate": "",
+        "summary": "",
+        "website": "",
+        "position": "",
+        "startDate": "",
+        "highlights": []
+      }
+    ],
+    "awards": [
+      {
+        "date": "",
+        "title": "",
+        "awarder": "",
+        "summary": ""
+      }
+    ],
+    "basics": {
+      "name": "",
+      "email": "",
+      "label": "",
+      "phone": "",
+      "picture": "",
+      "summary": "",
+      "website": "",
+      "location": {
+        "city": "",
+        "region": "",
+        "address": "",
+        "postalCode": "",
+        "countryCode": ""
+      },
+      "profiles": [
+        {
+          "url": "",
+          "network": "",
+          "username": ""
+        }
+      ],
+      "highlights": []
+    },
+    "skills": [
+      {
+        "name": "",
+        "level": "",
+        "keywords": []
+      }
+    ],
+    "version": "1.0",
+    "education": [
+      {
+        "gpa": "",
+        "area": "",
+        "courses": [],
+        "endDate": "",
+        "startDate": "",
+        "studyType": "",
+        "institution": ""
+      }
+    ],
+    "interests": [
+      {
+        "name": "",
+        "keywords": []
+      }
+    ],
+    "languages": [
+      {
+        "fluency": "",
+        "language": ""
+      }
+    ],
+    "volunteer": [
+      {
+        "endDate": "",
+        "summary": "",
+        "website": "",
+        "position": "",
+        "startDate": "",
+        "highlights": [],
+        "organization": ""
+      }
+    ],
+    "workLabel": "",
+    "references": [
+      {
+        "name": "",
+        "position": "",
+        "reference": ""
+      }
+    ],
+    "publications": [
+      {
+        "isbn": "",
+        "name": "",
+        "summary": "",
+        "website": "",
+        "publisher": "",
+        "releaseDate": ""
+      }
+    ],
+    "additionalWork": [
+      {
+        "company": "",
+        "endDate": "",
+        "summary": "",
+        "website": "",
+        "position": "",
+        "startDate": "",
+        "highlights": []
+      }
+    ],
+    "publicationsLabel": "",
+    "additionalWorkLabel": "",
+    "additionalPublications": [
+      {
+        "isbn": "",
+        "name": "",
+        "summary": "",
+        "website": "",
+        "publisher": "",
+        "releaseDate": ""
+      }
+    ],
+    "additionalPublicationsLabel": ""
+  }
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><$ options.title $> - <$ options.description $></title>
+
+    <!-- Global stylesheets -->
+    <link href="/static/assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+    <link href="/static/assets/material/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/assets/material/css/core.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/assets/material/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/assets/material/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+
+    <style>
+        /* ---- particles.js container ---- */
+        #particlesred-js, #particlesblack-js, #particlesblue-js, #particlesorange-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /*background-image: radial-gradient(circle, #fafafa 30%, #f5f5f5 100%)*/
+            /*background-color: #fc7279;*/
+            /*background-image: -webkit-linear-gradient(bottom left, #fc7279 10%, #ff7b9c 65%, #ffc019 125%);*/
+            /*background-image: linear-gradient(to top right, #fc7279 10%, #ff7b9c 65%, #ffc019 125%);*/
+            background-color: transparent;
+            background-size: cover;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+        }
+
+    </style>
+</head>
+
+<body class="login-container ">
+
+<div id="particlesred-js"></div>
+<div id="particlesblack-js"></div>
+<div id="particlesblue-js"></div>
+<div id="particlesorange-js"></div>
+
+<!-- Page container -->
+<div class="page-container">
+
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content">
+
+                <!-- Simple login form -->
+                <form metod="post" class="form-validate" id="_form">
+
+                    <div class="panel panel-body login-form ">
+                        <div class="text-center">
+                            <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+                            <h5 class="content-group"><$ team.title $>
+                                <small class="display-block"><$ team.description $></small>
+                            </h5>
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left">
+                            <input id="name" name="username" type="text" class="form-control" placeholder="账户名">
+                            <div class="form-control-feedback">
+                                <i class="icon-user text-muted"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left">
+                            <input id="password" name="password" type="password" class="form-control" placeholder="密码">
+                            <div class="form-control-feedback">
+                                <i class="icon-lock2 text-muted"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <button type="submit" class="btn bg-primary btn-block">登录 <i
+                                        class="icon-circle-right2 position-right"></i></button>
+                        </div>
+
+                        {#<div class="text-center">#}
+                            {#<a href="login_password_recover.html">忘记密码?</a>#}
+                        {#</div>#}
+                    </div>
+                </form>
+                <!-- /simple login form -->
+
+
+                <!-- Footer -->
+                <div class="footer text-muted text-center">
+                    &copy; 2017. <a href="http://baisheng.me">Basil</a>
+                </div>
+                <!-- /footer -->
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- /page content -->
+
+</div>
+<!-- /page container -->
+
+<!-- Core JS files -->
+<script type="text/javascript" src="/static/assets/js/core/libraries/jquery.min.js"></script>
+<script type="text/javascript" src="/static/assets/js/core/libraries/bootstrap.min.js"></script>
+<!-- /core JS files -->
+<script type="text/javascript" src="/static/assets/js/plugins/noty/packaged/jquery.noty.packaged.min.js"></script>
+<script type="text/javascript" src="/static/assets/js/plugins/notifications/pnotify.min.js"></script>
+<script type="text/javascript" src="/static/assets/js/plugins/forms/validation/validate.min.js"></script>
+<script type="text/javascript" src="/static/assets/js/plugins/forms/validation/localization/messages_zh.js"></script>
+<script type="text/javascript" src="/static/assets/js/pages/form_validation.js"></script>
+
+
+<script src="/static/assets/js/particles/particles.min.js"></script>
+<script src="/static/assets/js/viewport/lib/isInViewport.min.js"></script>
+
+<script>
+    $(function() {
+
+        var windowWidth = $(window).width();
+
+
+        if (windowWidth > 767) {
+            particlesJS.load('particlesred-js', '/static/data/particlesred.json');
+            particlesJS.load('particlesblack-js', '/static/data/particlesblack.json');
+            particlesJS.load('particlesblue-js', '/static/data/particlesblue.json');
+            particlesJS.load('particlesorange-js', '/static/data/particlesorange.json');
+        }
+    });
+
+
+    $('#_form').submit(function (e) {
+        e.preventDefault();
+        if ($(".form-validate").valid()) {
+
+            $.post("<$ http.url $>",
+                $(this).serialize()).done(function (data) {
+
+                if (data.errno > 0) {
+                    noty({
+                        text        : data.errmsg,
+                        type        : 'error',
+                        dismissQueue: true,
+                        layout      : 'topCenter',
+                        theme       : 'relax',
+                        closeWith   : ['click'],
+                        timeout     : 10000,
+                    });
+
+                } else {
+                    noty({
+                        text        : "登录成功",
+                        type        : 'success',
+                        dismissQueue: true,
+                        layout      : 'topCenter',
+                        theme       : 'relax',
+                        closeWith   : ['click'],
+                        timeout     : 10000,
+                    });
+
+                    location.reload();
+
+                }
+            }).fail(function () {
+                new PNotify({
+                    title: '出错啦',
+                    icon: 'icon-blocked',
+                    text: data.errmsg,
+                    addclass: 'bg-danger',
+                    type: 'danger',
+                    animate: {
+                        animate: true,
+                        in_class: 'bounceIn',
+                        out_class: 'bounceOut'
+                    }
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
