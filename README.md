@@ -24,6 +24,7 @@ PickerResume
 
 ## 演示地址
 > [resume.picker.cc](http://resume.picker.cc) 简历展示页
+
 > [resume.picker.cc/admin](http://resume.picker.cc/admin) 系统后台
 
 
